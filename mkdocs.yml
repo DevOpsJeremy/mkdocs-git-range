@@ -1,0 +1,9 @@
+site_name: MkDocs Git Range
+use_directory_urls: false
+
+plugins:
+  - search
+  - git-range
+
+markdown_extensions:
+  - toc:
