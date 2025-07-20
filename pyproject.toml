@@ -1,0 +1,47 @@
+[build-system]
+requires = [
+  "hatchling",
+  "hatch-requirements-txt"
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "mkdocs-git-range"
+description = "An MkDocs plugin for getting documents within a range of commits."
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "DevOps Jeremy", email = "DevOpsJeremY@gmail.com"},
+]
+dynamic = [
+  "version",
+  "dependencies"
+]
+
+[project.urls]
+Source = "https://github.com/DevOpsJeremy/mkdocs-git-range"
+Issues = "https://github.com/DevOpsJeremy/mkdocs-git-range/issues"
+History = "https://github.com/DevOpsJeremy/mkdocs-git-range/releases"
+
+[tool.hatch.version]
+path = "src/mkdocs_git_range/__init__.py"
+
+# Use the below values to take the package version from the $PACKAGE_VERSION env var.
+# Otherwise, the version is defined in src/mkdocs_git_range/__init__.py
+# source = "env"
+# variable = "PACKAGE_VERSION"
+
+[project.entry-points."mkdocs.plugins"]
+"git-range" = "mkdocs_git_range.plugin:GitRange"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+filename = "requirements.txt"
+
+[tool.hatch.build]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["mkdocs_git_range"]
+
+[tool.hatch.build.targets.sdist]
+include = ["mkdocs_git_range", "/requirements.txt"]
