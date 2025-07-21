@@ -1,14 +1,12 @@
 from .utils import GitRangeUtils
-from git import (
-    Repo,
-    Commit
-)
+from git import Repo, Commit
 
 
 class GitRangeRepo(Repo):
     """
     A git.Repo subclass with additional functionality for git range operations.
     """
+
     def __init__(self, *args, **kwargs):
         """
         Initialize the GitRangeRepo with an optional tail attribute.
@@ -22,8 +20,8 @@ class GitRangeRepo(Repo):
         self.tail = Commit(
             repo=self,
             binsha=bytes.fromhex(
-                self.git.execute(('git', 'rev-list', '--max-parents=0', 'HEAD'))
-            )
+                self.git.execute(("git", "rev-list", "--max-parents=0", "HEAD"))
+            ),
         )
 
     def get_tail(self):
@@ -31,7 +29,7 @@ class GitRangeRepo(Repo):
         return self.tail
 
 
-class GitRangeGit():
+class GitRangeGit:
     def get_repo():
         """
         Get the git repository instance.
@@ -43,11 +41,11 @@ class GitRangeGit():
 
     def get_filtered_files(plugin, files, config, from_ref=None, to_ref=None):
         if from_ref is None:
-            from_ref = plugin.config['from']
+            from_ref = plugin.config["from"]
         if to_ref is None:
-            to_ref = plugin.config['to']
+            to_ref = plugin.config["to"]
 
-        docs_dir_path = config.get('docs_dir')
+        docs_dir_path = config.get("docs_dir")
 
         try:
             # Execute git diff with the specified filters
@@ -57,7 +55,7 @@ class GitRangeGit():
                 f"{from_ref}..{to_ref}",
                 "--name-only",
                 "--diff-filter=dux",
-                docs_dir_path
+                docs_dir_path,
             )
 
             if not diff_output.strip():
@@ -68,9 +66,12 @@ class GitRangeGit():
 
             modified_files = []
             for file in files:
-                if GitRangeUtils.convert_rel_docs_to_repo(
-                    file.src_uri, plugin.repo, config
-                ) in diff_files:
+                if (
+                    GitRangeUtils.convert_rel_docs_to_repo(
+                        file.src_uri, plugin.repo, config
+                    )
+                    in diff_files
+                ):
                     modified_files.append(file)
 
             return modified_files

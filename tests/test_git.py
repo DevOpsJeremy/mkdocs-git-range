@@ -1,6 +1,7 @@
 """
 Tests for git-related functionality
 """
+
 import os
 from unittest.mock import Mock, patch
 from mkdocs_git_range.git import GitRangeGit, GitRangeRepo
@@ -17,12 +18,12 @@ class TestGitRangeRepo:
         git_range_repo = GitRangeRepo(temp_dir)
 
         # Should have all Repo functionality
-        assert hasattr(git_range_repo, 'heads')
-        assert hasattr(git_range_repo, 'commits')
-        assert hasattr(git_range_repo, 'working_dir')
+        assert hasattr(git_range_repo, "heads")
+        assert hasattr(git_range_repo, "commits")
+        assert hasattr(git_range_repo, "working_dir")
 
         # Should have tail attribute
-        assert hasattr(git_range_repo, 'tail')
+        assert hasattr(git_range_repo, "tail")
 
     def test_gitrange_repo_tail_attribute(self, temp_git_repo):
         """Test that GitRangeRepo sets tail correctly"""
@@ -32,7 +33,7 @@ class TestGitRangeRepo:
 
         # Tail should be set to the initial commit (first commit)
         assert git_range_repo.tail is not None
-        assert hasattr(git_range_repo.tail, 'hexsha')
+        assert hasattr(git_range_repo.tail, "hexsha")
 
     def test_set_and_get_tail(self, temp_git_repo):
         """Test setting and getting tail commit"""
@@ -51,7 +52,7 @@ class TestGitRangeRepo:
 class TestGitRangeGit:
     """Test the GitRangeGit utility class"""
 
-    @patch('mkdocs_git_range.git.GitRangeRepo')
+    @patch("mkdocs_git_range.git.GitRangeRepo")
     def test_get_repo_returns_gitrange_repo(self, mock_repo_class):
         """Test that get_repo returns a GitRangeRepo instance"""
         mock_repo_instance = Mock()
@@ -62,7 +63,7 @@ class TestGitRangeGit:
         mock_repo_class.assert_called_once_with(search_parent_directories=True)
         assert result == mock_repo_instance
 
-    @patch('mkdocs_git_range.git.GitRangeGit.get_repo')
+    @patch("mkdocs_git_range.git.GitRangeGit.get_repo")
     def test_get_filtered_files_with_mock_repo(self, mock_get_repo):
         """Test get_filtered_files with mocked repository"""
         # Setup mock repository
@@ -79,9 +80,7 @@ class TestGitRangeGit:
 
         # Execute
         result = GitRangeGit.get_filtered_files(
-            plugin_instance=Mock(),
-            files=mock_files,
-            config=mock_config
+            plugin_instance=Mock(), files=mock_files, config=mock_config
         )
 
         # Assert
@@ -94,10 +93,7 @@ class TestGitRangeGit:
 
         # Create mock plugin instance
         mock_plugin = Mock()
-        mock_plugin.config = {
-            'from': initial_commit.hexsha,
-            'to': second_commit.hexsha
-        }
+        mock_plugin.config = {"from": initial_commit.hexsha, "to": second_commit.hexsha}
 
         # Create mock config
         mock_config = Mock()
@@ -107,20 +103,18 @@ class TestGitRangeGit:
         mock_files = Mock()
 
         # Patch get_repo to return our test repo
-        with patch('mkdocs_git_range.git.GitRangeGit.get_repo') as mock_get_repo:
+        with patch("mkdocs_git_range.git.GitRangeGit.get_repo") as mock_get_repo:
             mock_get_repo.return_value = repo
 
             result = GitRangeGit.get_filtered_files(
-                plugin_instance=mock_plugin,
-                files=mock_files,
-                config=mock_config
+                plugin_instance=mock_plugin, files=mock_files, config=mock_config
             )
 
             # Should return files that were modified between commits
             assert isinstance(result, list)
             # The exact files depend on the git diff output format
 
-    @patch('mkdocs_git_range.git.GitRangeGit.get_repo')
+    @patch("mkdocs_git_range.git.GitRangeGit.get_repo")
     def test_get_filtered_files_handles_empty_diff(self, mock_get_repo):
         """Test get_filtered_files when git diff returns no results"""
         # Setup mock repository with empty diff
@@ -130,7 +124,7 @@ class TestGitRangeGit:
 
         # Setup mocks
         mock_plugin = Mock()
-        mock_plugin.config = {'from': 'abc123', 'to': 'def456'}
+        mock_plugin.config = {"from": "abc123", "to": "def456"}
         mock_config = Mock()
         mock_config.get.return_value = "/test/docs"
         mock_files = Mock()
@@ -141,7 +135,7 @@ class TestGitRangeGit:
         # Should return empty list
         assert result == []
 
-    @patch('mkdocs_git_range.git.GitRangeGit.get_repo')
+    @patch("mkdocs_git_range.git.GitRangeGit.get_repo")
     def test_get_filtered_files_handles_git_error(self, mock_get_repo):
         """Test get_filtered_files when git command fails"""
         # Setup mock repository that raises exception
@@ -151,7 +145,7 @@ class TestGitRangeGit:
 
         # Setup mocks
         mock_plugin = Mock()
-        mock_plugin.config = {'from': 'abc123', 'to': 'def456'}
+        mock_plugin.config = {"from": "abc123", "to": "def456"}
         mock_config = Mock()
         mock_config.get.return_value = "/test/docs"
         mock_files = Mock()
@@ -183,8 +177,7 @@ class TestGitIntegration:
 
         # Test git diff between commits
         diff_output = git_range_repo.git.diff(
-            f"{initial_commit.hexsha}..{second_commit.hexsha}",
-            "--name-only"
+            f"{initial_commit.hexsha}..{second_commit.hexsha}", "--name-only"
         )
 
         # Should show the files that were modified

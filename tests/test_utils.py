@@ -1,6 +1,7 @@
 """
 Tests for utility functions and classes
 """
+
 import logging
 from unittest.mock import Mock
 from mkdocs_git_range.utils import GitRangeLogger
@@ -121,12 +122,12 @@ class TestMockingHelpers:
         mock_config.get.return_value = "/test/docs"
 
         # Test that mock behaves as expected
-        assert mock_config.get('docs_dir') == "/test/docs"
+        assert mock_config.get("docs_dir") == "/test/docs"
 
     def test_create_mock_mkdocs_files(self):
         """Test creating mock MkDocs files structure"""
         mock_files = Mock()
         mock_files.documentation_pages.return_value = [
             Mock(src_uri="index.md"),
-            Mock(src_uri="guide.md")
+            Mock(src_uri="guide.md"),
         ]

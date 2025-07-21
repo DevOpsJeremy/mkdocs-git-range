@@ -1,6 +1,7 @@
 """
 End-to-end integration tests for the entire plugin
 """
+
 import os
 from unittest.mock import Mock, patch
 from mkdocs.structure.files import Files, File
@@ -20,29 +21,44 @@ class TestFullPluginIntegration:
         plugin = GitRangePlugin()
 
         # Mock the repo to use our test repo
-        with patch('mkdocs_git_range.git.GitRangeGit.get_repo') as mock_get_repo:
+        with patch("mkdocs_git_range.git.GitRangeGit.get_repo") as mock_get_repo:
             mock_get_repo.return_value = repo
 
             # Setup plugin config
             plugin.config = {
-                'from': initial_commit.hexsha,
-                'to': second_commit.hexsha,
-                'filter': True,
-                'include': ['index.md']  # Always include index
+                "from": initial_commit.hexsha,
+                "to": second_commit.hexsha,
+                "filter": True,
+                "include": ["index.md"],  # Always include index
             }
 
             # Create mock MkDocs config
             mkdocs_config = {
-                'docs_dir': os.path.join(temp_dir, 'docs'),
-                'site_dir': os.path.join(temp_dir, 'site')
+                "docs_dir": os.path.join(temp_dir, "docs"),
+                "site_dir": os.path.join(temp_dir, "site"),
             }
 
             # Create mock files
             files = Files([])
             test_files = [
-                File("index.md", mkdocs_config['docs_dir'], mkdocs_config['site_dir'], use_directory_urls=False),
-                File("guide.md", mkdocs_config['docs_dir'], mkdocs_config['site_dir'], use_directory_urls=False),
-                File("new_page.md", mkdocs_config['docs_dir'], mkdocs_config['site_dir'], use_directory_urls=False),
+                File(
+                    "index.md",
+                    mkdocs_config["docs_dir"],
+                    mkdocs_config["site_dir"],
+                    use_directory_urls=False,
+                ),
+                File(
+                    "guide.md",
+                    mkdocs_config["docs_dir"],
+                    mkdocs_config["site_dir"],
+                    use_directory_urls=False,
+                ),
+                File(
+                    "new_page.md",
+                    mkdocs_config["docs_dir"],
+                    mkdocs_config["site_dir"],
+                    use_directory_urls=False,
+                ),
             ]
 
             for file in test_files:
@@ -51,7 +67,7 @@ class TestFullPluginIntegration:
             # Test 1: on_config
             result_config = plugin.on_config(mkdocs_config)
             assert result_config == mkdocs_config
-            assert hasattr(plugin, 'include')
+            assert hasattr(plugin, "include")
 
             # Test 2: on_files
             result_files = plugin.on_files(files, mkdocs_config)
@@ -71,7 +87,9 @@ Total files: {{ git_range()|length }}
             page = Mock()
             page.title = "Test Integration Page"
 
-            result_markdown = plugin.on_page_markdown(markdown, page, mkdocs_config, result_files)
+            result_markdown = plugin.on_page_markdown(
+                markdown, page, mkdocs_config, result_files
+            )
 
             # Verify the markdown was processed
             assert result_markdown is not None
@@ -86,18 +104,18 @@ Total files: {{ git_range()|length }}
 
         plugin = GitRangePlugin()
 
-        with patch('mkdocs_git_range.git.GitRangeGit.get_repo') as mock_get_repo:
+        with patch("mkdocs_git_range.git.GitRangeGit.get_repo") as mock_get_repo:
             mock_get_repo.return_value = repo
 
             # Configure plugin to compare commit with itself (no changes)
             plugin.config = {
-                'from': initial_commit.hexsha,
-                'to': initial_commit.hexsha,
-                'filter': True,
-                'include': []
+                "from": initial_commit.hexsha,
+                "to": initial_commit.hexsha,
+                "filter": True,
+                "include": [],
             }
 
-            mkdocs_config = {'docs_dir': os.path.join(temp_dir, 'docs')}
+            mkdocs_config = {"docs_dir": os.path.join(temp_dir, "docs")}
 
             # Test on_config
             plugin.on_config(mkdocs_config)
@@ -123,22 +141,24 @@ Total files: {{ git_range()|length }}
 
         plugin = GitRangePlugin()
 
-        with patch('mkdocs_git_range.git.GitRangeGit.get_repo') as mock_get_repo:
+        with patch("mkdocs_git_range.git.GitRangeGit.get_repo") as mock_get_repo:
             mock_get_repo.return_value = repo
 
             # Configure plugin with filtering disabled
             plugin.config = {
-                'from': initial_commit.hexsha,
-                'to': second_commit.hexsha,
-                'filter': False,  # Filtering disabled
-                'include': []
+                "from": initial_commit.hexsha,
+                "to": second_commit.hexsha,
+                "filter": False,  # Filtering disabled
+                "include": [],
             }
 
-            mkdocs_config = {'docs_dir': os.path.join(temp_dir, 'docs')}
+            mkdocs_config = {"docs_dir": os.path.join(temp_dir, "docs")}
 
             # Create mock files
             files = Files([])
-            test_file = File("test.md", mkdocs_config['docs_dir'], "/site", use_directory_urls=False)
+            test_file = File(
+                "test.md", mkdocs_config["docs_dir"], "/site", use_directory_urls=False
+            )
             files.append(test_file)
 
             # Test on_config
@@ -149,7 +169,11 @@ Total files: {{ git_range()|length }}
             assert result_files == files
 
             # No files should be excluded when filtering is disabled
-            excluded_files = [f for f in result_files if hasattr(f, 'inclusion') and f.inclusion.name == 'EXCLUDED']
+            excluded_files = [
+                f
+                for f in result_files
+                if hasattr(f, "inclusion") and f.inclusion.name == "EXCLUDED"
+            ]
             assert len(excluded_files) == 0
 
     def test_plugin_error_handling(self):
@@ -159,17 +183,19 @@ Total files: {{ git_range()|length }}
         plugin = GitRangePlugin()
 
         # Mock git operations to fail
-        with patch('mkdocs_git_range.git.GitRangeGit.get_filtered_files') as mock_filtered_files:
+        with patch(
+            "mkdocs_git_range.git.GitRangeGit.get_filtered_files"
+        ) as mock_filtered_files:
             mock_filtered_files.side_effect = Exception("Git operation failed")
 
             plugin.config = {
-                'from': 'abc123',
-                'to': 'def456',
-                'filter': True,
-                'include': []
+                "from": "abc123",
+                "to": "def456",
+                "filter": True,
+                "include": [],
             }
 
-            mkdocs_config = {'docs_dir': '/test/docs'}
+            mkdocs_config = {"docs_dir": "/test/docs"}
 
             # Should handle the error gracefully
             try:
@@ -187,26 +213,46 @@ Total files: {{ git_range()|length }}
 
         plugin = GitRangePlugin()
 
-        with patch('mkdocs_git_range.git.GitRangeGit.get_repo') as mock_get_repo:
+        with patch("mkdocs_git_range.git.GitRangeGit.get_repo") as mock_get_repo:
             mock_get_repo.return_value = repo
 
             # Configure plugin with manual include list
             plugin.config = {
-                'from': initial_commit.hexsha,
-                'to': second_commit.hexsha,
-                'filter': True,
-                'include': ['always_include.md', 'important.md']
+                "from": initial_commit.hexsha,
+                "to": second_commit.hexsha,
+                "filter": True,
+                "include": ["always_include.md", "important.md"],
             }
 
-            mkdocs_config = {'docs_dir': os.path.join(temp_dir, 'docs')}
+            mkdocs_config = {"docs_dir": os.path.join(temp_dir, "docs")}
 
             # Create mock files including the manually included ones
             files = Files([])
             test_files = [
-                File("guide.md", mkdocs_config['docs_dir'], "/site", use_directory_urls=False),
-                File("always_include.md", mkdocs_config['docs_dir'], "/site", use_directory_urls=False),
-                File("important.md", mkdocs_config['docs_dir'], "/site", use_directory_urls=False),
-                File("other.md", mkdocs_config['docs_dir'], "/site", use_directory_urls=False),
+                File(
+                    "guide.md",
+                    mkdocs_config["docs_dir"],
+                    "/site",
+                    use_directory_urls=False,
+                ),
+                File(
+                    "always_include.md",
+                    mkdocs_config["docs_dir"],
+                    "/site",
+                    use_directory_urls=False,
+                ),
+                File(
+                    "important.md",
+                    mkdocs_config["docs_dir"],
+                    "/site",
+                    use_directory_urls=False,
+                ),
+                File(
+                    "other.md",
+                    mkdocs_config["docs_dir"],
+                    "/site",
+                    use_directory_urls=False,
+                ),
             ]
 
             for file in test_files:
@@ -220,17 +266,21 @@ Total files: {{ git_range()|length }}
 
             # Files in the manual include list should not be excluded
             # even if they're not in the git range
-            always_include_file = next((f for f in result_files if f.src_uri == "always_include.md"), None)
-            important_file = next((f for f in result_files if f.src_uri == "important.md"), None)
+            always_include_file = next(
+                (f for f in result_files if f.src_uri == "always_include.md"), None
+            )
+            important_file = next(
+                (f for f in result_files if f.src_uri == "important.md"), None
+            )
 
             assert always_include_file is not None
             assert important_file is not None
 
             # These files should not be excluded
-            if hasattr(always_include_file, 'inclusion'):
-                assert always_include_file.inclusion.name != 'EXCLUDED'
-            if hasattr(important_file, 'inclusion'):
-                assert important_file.inclusion.name != 'EXCLUDED'
+            if hasattr(always_include_file, "inclusion"):
+                assert always_include_file.inclusion.name != "EXCLUDED"
+            if hasattr(important_file, "inclusion"):
+                assert important_file.inclusion.name != "EXCLUDED"
 
 
 class TestPluginConfiguration:
@@ -244,10 +294,10 @@ class TestPluginConfiguration:
 
         # Check that config scheme has expected defaults
         config_dict = dict(plugin.config_scheme)
-        assert 'from' in config_dict
-        assert 'to' in config_dict
-        assert 'filter' in config_dict
-        assert 'include' in config_dict
+        assert "from" in config_dict
+        assert "to" in config_dict
+        assert "filter" in config_dict
+        assert "include" in config_dict
 
     def test_custom_configuration(self):
         """Test plugin with custom configuration"""
@@ -257,16 +307,16 @@ class TestPluginConfiguration:
 
         # Set custom configuration
         custom_config = {
-            'from': 'custom_from_commit',
-            'to': 'custom_to_commit',
-            'filter': True,
-            'include': ['custom_file.md']
+            "from": "custom_from_commit",
+            "to": "custom_to_commit",
+            "filter": True,
+            "include": ["custom_file.md"],
         }
 
         plugin.config = custom_config
 
         # Verify configuration is set
-        assert plugin.config['from'] == 'custom_from_commit'
-        assert plugin.config['to'] == 'custom_to_commit'
-        assert plugin.config['filter'] is True
-        assert plugin.config['include'] == ['custom_file.md']
+        assert plugin.config["from"] == "custom_from_commit"
+        assert plugin.config["to"] == "custom_to_commit"
+        assert plugin.config["filter"] is True
+        assert plugin.config["include"] == ["custom_file.md"]

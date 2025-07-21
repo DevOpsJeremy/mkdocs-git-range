@@ -1,6 +1,7 @@
 """
 Shared fixtures for mkdocs-git-range tests
 """
+
 import pytest
 import tempfile
 import shutil
@@ -52,7 +53,7 @@ def temp_mkdocs_repo():
         ("docs/index.md", "# Home\nWelcome to the docs"),
         ("docs/guide.md", "# Guide\nThis is a guide"),
         ("docs/api/overview.md", "# API Overview\nAPI documentation"),
-        ("mkdocs.yml", "site_name: Test Site\ndocs_dir: docs\n")
+        ("mkdocs.yml", "site_name: Test Site\ndocs_dir: docs\n"),
     ]
 
     for file_path, content in files_to_create:
@@ -85,8 +86,8 @@ def temp_mkdocs_repo():
 def mock_mkdocs_config():
     """Create a mock MkDocs config object"""
     config = Config(schema=())
-    config['docs_dir'] = '/test/docs'
-    config['site_dir'] = '/test/site'
+    config["docs_dir"] = "/test/docs"
+    config["site_dir"] = "/test/site"
     return config
 
 
