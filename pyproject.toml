@@ -37,6 +37,18 @@ path = "src/mkdocs_git_range/__init__.py"
 [tool.hatch.metadata.hooks.requirements_txt]
 filename = "requirements.txt"
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "pytest-mock",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+
 [tool.hatch.build]
 sources = ["src"]
 
