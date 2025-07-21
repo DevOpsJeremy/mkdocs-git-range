@@ -7,3 +7,7 @@ plugins:
 
 markdown_extensions:
   - toc:
+
+theme:
+  name: mkdocs
+  custom_dir: templates

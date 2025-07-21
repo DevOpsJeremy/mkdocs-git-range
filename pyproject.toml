@@ -32,7 +32,7 @@ path = "src/mkdocs_git_range/__init__.py"
 # variable = "PACKAGE_VERSION"
 
 [project.entry-points."mkdocs.plugins"]
-"git-range" = "mkdocs_git_range.plugin:GitRange"
+"git-range" = "mkdocs_git_range.plugin:GitRangePlugin"
 
 [tool.hatch.metadata.hooks.requirements_txt]
 filename = "requirements.txt"
