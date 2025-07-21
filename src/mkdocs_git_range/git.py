@@ -1,9 +1,9 @@
 from .utils import GitRangeUtils
-import os
 from git import (
     Repo,
     Commit
 )
+
 
 class GitRangeRepo(Repo):
     """
@@ -12,7 +12,7 @@ class GitRangeRepo(Repo):
     def __init__(self, *args, **kwargs):
         """
         Initialize the GitRangeRepo with an optional tail attribute.
-        
+
         Args:
             path: Path to the git repository
             tail: The tail commit/reference for range operations
@@ -25,16 +25,17 @@ class GitRangeRepo(Repo):
                 self.git.execute(('git', 'rev-list', '--max-parents=0', 'HEAD'))
             )
         )
-    
+
     def get_tail(self):
         """Get the current tail commit/reference."""
         return self.tail
+
 
 class GitRangeGit():
     def get_repo():
         """
         Get the git repository instance.
-        
+
         Returns:
             GitRangeRepo: The git repository instance.
         """
@@ -47,8 +48,7 @@ class GitRangeGit():
             to_ref = plugin.config['to']
 
         docs_dir_path = config.get('docs_dir')
-        repo_path = plugin.repo.working_dir
-        
+
         try:
             # Execute git diff with the specified filters
             # --name-only: only show file names
@@ -59,10 +59,10 @@ class GitRangeGit():
                 "--diff-filter=dux",
                 docs_dir_path
             )
-            
+
             if not diff_output.strip():
                 return []
-            
+
             # Split output into lines and filter out empty lines
             diff_files = [f.strip() for f in diff_output.splitlines() if f.strip()]
 
