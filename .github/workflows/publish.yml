@@ -5,7 +5,7 @@ on:
     branches: [ $default-branch, initial-deployment ]
 
 jobs:
-  test:
+  publish:
 
     runs-on: ubuntu-latest
     strategy:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: latest
+        python-version: 3.x
     - name: Install dependencies
       run: pip install build twine
     - name: Build package
