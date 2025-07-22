@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
-        run: python src/mkdocs_git_range/__init__.py
+        run: python -c 'from .src.mkdocs_git_range.__init__ import __version__; print(__version__)'
