@@ -7,5 +7,5 @@ def test_plugin_can_be_initialized():
 
     # Basic assertions to verify the plugin is properly initialized
     assert plugin is not None
-    assert hasattr(plugin, 'config_scheme')
-    assert hasattr(plugin, 'logger')
+    assert hasattr(plugin, "config_scheme")
+    assert hasattr(plugin, "logger")
