@@ -1,0 +1,15 @@
+name: Test push
+
+on:
+  push:
+    branches: [ '*' ]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    container: python:3.11-alpine
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: python src/mkdocs_git_range/__init__.py

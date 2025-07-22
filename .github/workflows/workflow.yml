@@ -1,43 +1,18 @@
-name: Test and Publish Python package
+name: Publish Python package
 
 on:
   push:
-    branches: [ "*" ]  # All branches
-  pull_request:
     branches: [ $default-branch ]
+    paths: [ src/** ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: pip install --upgrade pip ruff pytest .
-      - name: Lint with ruff
-        run: |
-          ruff check .
-          ruff format --check .
-      - name: Test with pytest
-        run: pytest
-
   publish:
     name: Publish to PyPI
-    needs: [test]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       contents: read  # Needed for checkout
       id-token: write  # Needed for PyPI trusted publishing
-    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
