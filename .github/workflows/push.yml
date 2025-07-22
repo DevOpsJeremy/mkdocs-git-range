@@ -13,4 +13,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: pip install .
-      - run: python -c 'print(mkdocs_git_range.__version__)'
+      - run: |
+          VERSION=$(python -c 'from mkdocs_git_range import __version__ as version; print(version)')
+          echo "VERSION=${VERSION}"
