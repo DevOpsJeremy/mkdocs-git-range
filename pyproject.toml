@@ -11,7 +11,7 @@ description = "An MkDocs plugin for getting documents within a range of commits.
 readme = "README.md"
 license = "MIT"
 authors = [
-    {name = "DevOps Jeremy", email = "DevOpsJeremY@gmail.com"},
+    {name = "DevOps Jeremy", email = "DevOpsJeremy@gmail.com"},
 ]
 dynamic = [
   "version",
