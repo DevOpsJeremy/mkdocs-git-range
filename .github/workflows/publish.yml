@@ -13,11 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: latest
     - name: Install dependencies
-      run: pip install build
+      run: pip install build twine
     - name: Build package
       run: python -m build
+    - name: Publish package
+      run: twine upload dist/*
