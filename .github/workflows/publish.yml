@@ -1,0 +1,23 @@
+name: Publish Python package
+
+on:
+  push:
+    branches: [ $default-branch, initial-deployment ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install build
+    - name: Build package
+      run: python -m build
