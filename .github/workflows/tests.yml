@@ -3,7 +3,6 @@ name: Test Python package
 on:
   push:
     branches: [ '*' ]
-    branches-ignore: [ $default-branch ]
     paths: [ src/**, tests/** ]
   pull_request:
     branches: [ $default-branch ]

@@ -15,4 +15,4 @@ jobs:
         run: pip install .
       - run: |
           VERSION=$(python -c 'from mkdocs_git_range import __version__ as version; print(version)')
-          echo "VERSION=${VERSION}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
