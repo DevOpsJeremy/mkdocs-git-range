@@ -3,7 +3,7 @@ name: Pull request
 on:
   pull_request:
     branches: [ $default-branch ]
-    types: [opened, edited, reopened]
+    types: [ opened, edited, reopened ]
 
 jobs:
   mr:
