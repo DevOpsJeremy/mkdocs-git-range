@@ -1,4 +1,4 @@
-name: Merge request
+name: Pull request
 
 on:
   pull_request:
@@ -7,8 +7,10 @@ on:
 
 jobs:
   mr:
-    name: Merge request
+    name: Pull request
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     strategy:
       fail-fast: false
       matrix:
@@ -68,6 +70,8 @@ jobs:
     steps:
       - name: Label
         if: ${{ startsWith(github.event.pull_request.title, format('{0}:', matrix.tag)) }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           LABEL=${{ matrix.label }}
           gh pr edit ${{ github.event.pull_request.number }} --add-label "$LABEL"
