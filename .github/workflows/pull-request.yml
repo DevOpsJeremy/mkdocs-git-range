@@ -1,0 +1,77 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches: [ $default-branch ]
+    types: [ opened, edited, reopened ]
+
+jobs:
+  mr:
+    name: Pull request
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: feature
+            tag:
+              - feature
+              - features
+          - label: bugfix
+            tag:
+              - bugfixes
+              - bugfix
+              - bug fixes
+              - bug fix
+              - bug
+              - bugs
+          - label: hotfix
+            tag:
+              - hotfixes
+              - hotfix
+              - hot fixes
+              - hot fix
+          - label: added
+            tag:
+              - added
+              - add
+          - label: changed
+            tag:
+              - changed
+              - change
+          - label: deprecated
+            tag:
+              - deprecated
+              - deprecate
+          - label: removed
+            tag:
+              - removed
+              - remove
+          - label: updated
+            tag:
+              - updated
+              - update
+              - updates
+          - label: security
+            tag:
+              - security
+          - label: 
+            tag:
+              - documentation
+              - docs
+          - label: ci
+            tag:
+              - ci
+              - ci/cd
+              - ci-cd
+              - cicd
+    steps:
+      - name: Label
+        if: ${{ startsWith(github.event.pull_request.title, format('{0}:', matrix.tag)) }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LABEL=${{ matrix.label }}
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "$LABEL"
