@@ -6,34 +6,39 @@ on:
     paths: [ src/** ]
 
 jobs:
-  publish:
+  release:
     name: Publish to PyPI
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
-      contents: read  # Needed for checkout
-      id-token: write  # Needed for PyPI trusted publishing
+      contents: read
+      id-token: write
     steps:
+      - name: Update version
+        run: |
+          VERSION=$NEXT_VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          gh variable set VERSION -b $VERSION
+          NEXT_VERSION=$(echo $NEXT_VERSION | awk -F. -v OFS=. '{$NF += 1; print}')
+          gh variable set NEXT_VERSION -b $NEXT_VERSION
+
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: 3.x
+
       - name: Install dependencies
         run: pip install build .
+
       - name: Build package
         run: python -m build
-      - name: Get version
-        run: |
-          VERSION=$(python -c 'from mkdocs_git_range import __version__; print(__version__)')
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-  
-  release:
-    name: Create new release
-    runs-on: ubuntu-latest
-    needs: [publish]
-    steps:
+
       - name: Create release
-        run: gh release create $VERSION --title $VERSION --generate-notes --target $GITHUB_REF_NAME
+        run: |
+          gh release create $VERSION --title $VERSION --generate-notes --target $GITHUB_REF_NAME
+          gh release upload $VERSION dist/*

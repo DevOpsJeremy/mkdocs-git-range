@@ -1,0 +1,43 @@
+# https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+
+changelog:
+  exclude:
+    labels:
+      - skip-release
+  categories:
+    - title: New features
+      labels:
+        - feature
+    - title: Bug fixes
+      labels:
+        - bugfix
+    - title: Hotfixes
+      labels:
+        - hotfix
+    - title: Added
+      labels:
+        - added
+    - title: Changed
+      labels:
+        - changed
+    - title: Deprecated
+      labels:
+        - deprecated
+    - title: Removed
+      labels:
+        - removed
+    - title: Updated
+      labels:
+        - updated
+    - title: Security improvements
+      labels:
+        - security
+    - title: Documentation updates
+      labels:
+        - documentation
+    - title: CI/CD improvements
+      labels:
+        - ci
+    - title: Other Changes
+      labels:
+        - "*"
