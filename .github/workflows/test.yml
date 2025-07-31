@@ -12,24 +12,6 @@ jobs:
         - /home/runner:/root
     steps:
       - uses: actions/checkout@v4
-        with:
-          set-safe-directory: true
-        #  repository: DevOpsJeremy/DevOpsJeremy.github.io
-        #if: "'a' == 'b'"
-      - run: /usr/bin/git config --global safe.directory || echo fail
-      - run: git config --global safe.directory || echo fail
-      - run: pip install . # mkdocs-git-range
-      - run: git config --local safe || echo fail
-      - run: git config --local safe.directory || echo fail
-      - run: git config --global safe || echo fail
-      - run: pwd
-      - run: ls -a
-      - run: cat .git/config || echo fail
-      - run: cat ~/.gitconfig || echo fail
-      #- run: git config --global --add safe.directory /__w/mkdocs-git-range/mkdocs-git-range
-      - run: cat .git/config || echo fail
-      - run: cat ~/.gitconfig || echo fail
-      - run: git config --global safe.directory || echo fail
-      - run: git rev-parse --show-toplevel || echo fail
+      - run: pip install .
       - name: Build
         run: mkdocs build
