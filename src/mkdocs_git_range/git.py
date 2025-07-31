@@ -17,6 +17,7 @@ class GitRangeRepo(Repo):
             *args, **kwargs: Additional arguments passed to git.Repo
         """
         super().__init__(*args, **kwargs)
+        print(args, kwargs)
         self.tail = Commit(
             repo=self,
             binsha=bytes.fromhex(
@@ -51,6 +52,7 @@ class GitRangeGit:
             # Execute git diff with the specified filters
             # --name-only: only show file names
             # --diff-filter=dux: d=deleted, u=unmerged, x=unknown
+            print(f"Getting filtered files from {from_ref} to {to_ref} in {docs_dir_path}")
             diff_output = plugin.repo.git.diff(
                 f"{from_ref}..{to_ref}",
                 "--name-only",
