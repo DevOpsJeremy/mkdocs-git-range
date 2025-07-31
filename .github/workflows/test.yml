@@ -6,7 +6,10 @@ jobs:
     runs-on: [ubuntu-latest]
     env:
       GIT_TRACE: 1
-    #container: squidfunk/mkdocs-material
+    container:
+      image: squidfunk/mkdocs-material
+      volumes:
+        - /home/runner:/root
     steps:
       - uses: actions/checkout@v4
         with:
