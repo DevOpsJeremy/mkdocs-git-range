@@ -12,6 +12,7 @@ jobs:
         #  repository: DevOpsJeremy/DevOpsJeremy.github.io
         #if: "'a' == 'b'"
       - run: pip install . # mkdocs-git-range
+      - run: git config --global safe.directory
       - run: git rev-parse --show-toplevel
       - name: Build
         run: mkdocs build
