@@ -23,7 +23,7 @@ jobs:
       - run: ls -a
       - run: cat .git/config || echo fail
       - run: cat ~/.gitconfig || echo fail
-      - run: git config --global --add safe.directory /__w/mkdocs-git-range/mkdocs-git-range
+      #- run: git config --global --add safe.directory /__w/mkdocs-git-range/mkdocs-git-range
       - run: cat .git/config || echo fail
       - run: cat ~/.gitconfig || echo fail
       - run: git config --global safe.directory || echo fail
