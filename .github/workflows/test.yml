@@ -7,8 +7,8 @@ jobs:
     container: squidfunk/mkdocs-material
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: DevOpsJeremy/DevOpsJeremy.github.io
-        if: "'a' == 'b'"
+        #with:
+        #  repository: DevOpsJeremy/DevOpsJeremy.github.io
+        #if: "'a' == 'b'"
       - name: Build
         run: mkdocs build
