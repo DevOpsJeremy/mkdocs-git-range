@@ -1,0 +1,10 @@
+on:
+  push:
+    branches: ["*"]
+jobs:
+  checkout:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Hello world
+        run: |
+          echo Hello world
