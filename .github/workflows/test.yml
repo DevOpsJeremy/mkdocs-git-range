@@ -11,6 +11,6 @@ jobs:
           set-safe-directory: true
         #  repository: DevOpsJeremy/DevOpsJeremy.github.io
         #if: "'a' == 'b'"
-      - run: pip install mkdocs-git-range
+      - run: pip install . # mkdocs-git-range
       - name: Build
         run: mkdocs build
