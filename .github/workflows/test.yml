@@ -8,3 +8,6 @@ jobs:
       - name: Hello world
         run: |
           echo Hello world
+      - uses: actions/checkout@v4
+        with:
+          repository: DevOpsJeremy/DevOpsJeremy.github.io
