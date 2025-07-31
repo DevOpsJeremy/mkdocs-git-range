@@ -6,7 +6,6 @@ jobs:
     runs-on: [ubuntu-latest]
     container: squidfunk/mkdocs-material
     steps:
-      - run: pip install . # mkdocs-git-range
       - uses: actions/checkout@v4
         with:
           set-safe-directory: true
