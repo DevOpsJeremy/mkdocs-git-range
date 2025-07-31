@@ -13,6 +13,7 @@ jobs:
           set-safe-directory: true
         #  repository: DevOpsJeremy/DevOpsJeremy.github.io
         #if: "'a' == 'b'"
+      - run: git config --global safe.directory || echo fail
       - run: pip install . # mkdocs-git-range
       - run: git config --local safe || echo fail
       - run: git config --local safe.directory || echo fail
