@@ -4,6 +4,8 @@ on:
 jobs:
   checkout:
     runs-on: [ubuntu-latest]
+    env:
+      GIT_TRACE: 1
     container: squidfunk/mkdocs-material
     steps:
       - uses: actions/checkout@v4
@@ -12,7 +14,7 @@ jobs:
         #  repository: DevOpsJeremy/DevOpsJeremy.github.io
         #if: "'a' == 'b'"
       - run: pip install . # mkdocs-git-range
-      - run: git config --global --verbose safe.directory
+      - run: git config --global safe.directory
       - run: git rev-parse --show-toplevel
       - name: Build
         run: mkdocs build
