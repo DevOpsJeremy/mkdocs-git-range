@@ -4,8 +4,6 @@ on:
 jobs:
   checkout:
     runs-on: [ubuntu-latest]
-    env:
-      GIT_TRACE: 1
     steps:
       - uses: actions/checkout@v4
       - run: pip install .

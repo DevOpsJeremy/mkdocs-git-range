@@ -3,3 +3,7 @@ site_name: mkdocs-git-range
 plugins:
   - search
   - git-range
+
+theme:
+  name: mkdocs
+  custom_dir: overrides
