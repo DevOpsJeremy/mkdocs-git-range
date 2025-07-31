@@ -4,11 +4,11 @@ on:
 jobs:
   checkout:
     runs-on: [ubuntu-latest]
+    container: squidfunk/mkdocs-material
     steps:
       - uses: actions/checkout@v4
         with:
           repository: DevOpsJeremy/DevOpsJeremy.github.io
-      - name: List
-        run: |
-          pwd
-          ls -a
+        if: "'a' == 'b'"
+      - name: Build
+        run: mkdocs build
