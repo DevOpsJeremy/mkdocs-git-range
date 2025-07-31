@@ -6,11 +6,12 @@ jobs:
     runs-on: [ubuntu-latest]
     container: squidfunk/mkdocs-material
     steps:
-      - run: pip install mkdocs-git-range
+      - run: pip install . # mkdocs-git-range
       - uses: actions/checkout@v4
         with:
           set-safe-directory: true
         #  repository: DevOpsJeremy/DevOpsJeremy.github.io
         #if: "'a' == 'b'"
+      - run: pip install mkdocs-git-range
       - name: Build
         run: mkdocs build
