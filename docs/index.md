@@ -5,4 +5,8 @@ template: main.html
 
 blhe
 
-{{ git_range() }}
+<ul>
+{%- for file in git_range() -%}
+<li>{{ file.page }}</li>
+{%- endfor -%}
+</ul>
