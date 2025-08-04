@@ -17,7 +17,6 @@ class GitRangeRepo(Repo):
             *args, **kwargs: Additional arguments passed to git.Repo
         """
         super().__init__(*args, **kwargs)
-        print(args, kwargs)
         self.tail = Commit(
             repo=self,
             binsha=bytes.fromhex(
@@ -79,5 +78,5 @@ class GitRangeGit:
 
         except Exception as e:
             # Log error and return empty list as fallback
-            plugin.logging.error(f"Error getting filtered files: {e}")
+            plugin.logger.error(f"Error getting filtered files: {e}")
             return []

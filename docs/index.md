@@ -1,12 +1,15 @@
 ---
 title: Home
-template: main.html
 ---
 
-blhe
+Page:
 
-<ul>
+{{ page }}
+
+Doc git_range()
+
 {%- for file in git_range() -%}
-<li>{{ file.page }}</li>
+
+File: {{ file }}
+
 {%- endfor -%}
-</ul>
